@@ -7,8 +7,10 @@ class Main:
         self.window = pygame.display.set_mode([sizex, sizey])
         self.title  = pygame.display.set_caption(title)
 
-        self.menu = Menu()
+        self.start_screen = Menu()
         self.game = Game()
+
+        self.fps = pygame.time.Clock()
 
         self.game_loop = True
 
@@ -20,18 +22,23 @@ class Main:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.game_loop = False
+            if not self.start_screen.change_scene:
+                self.start_screen.events(event)
+            elif not self.game.change_scene:
+                self.game.bee.move_bee(event)   
+            
 
-            self.menu.events(event)
-
-    def update(self)-> None: #---------------------------------------------- UPDATE
-        while self.game_loop:
+    def update(self)-> None:    #---------------------------------------- UPDATE
+        while self.game_loop:   #---------------------------------------------- MAIN GAME LOOP
+            self.fps.tick(30)   #-------------------------------------------------------------- GAME FPS
             self.draw()
             self.events()
             pygame.display.update()
 
     def draw(self)-> None: #---------------------------------------------- DRAW
-        if not self.menu.change_scene:
-            self.menu.draw(self.window)
+        self.window.fill([0,0,0])
+        if not self.start_screen.change_scene:
+            self.start_screen.draw(self.window)
         elif not self.game.change_scene:
             self.game.draw(self.window)
             self.game.update()
