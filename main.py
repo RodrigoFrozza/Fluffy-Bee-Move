@@ -37,5 +37,5 @@ class Main:
             self.game.update()
 
 
-game = Main(360, 640, 'BeeHoney')
+game = Main(360, 640, 'Fluffy Bee Move')
 game.update()
